@@ -64,6 +64,7 @@ def get_state(citizen, time_of_day="morning",events=None):
         bucket(citizen.energy, 30, 70),
         bucket(citizen.hunger, 30, 70),
         bucket(citizen.money, 10, 50),
+        bucket(citizen.happiness,20,70),
         time_of_day,
         events.get("is_raining",False),
         events.get("tax_hike",False)
