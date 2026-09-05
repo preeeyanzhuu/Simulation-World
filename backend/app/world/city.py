@@ -1,4 +1,4 @@
-GRID_SIZE = 20
+GRID_SIZE = 30
 
 def create_grid():
     grid = []       
