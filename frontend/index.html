@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityMind AI — Live Simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="topbar-title">
+            <span class="topbar-mark">CityMind</span>
+            <span class="topbar-sub">AI World Simulation</span>
+        </div>
+
+        <div class="event-controls" id="eventControls">
+            <button class="event-btn" id="rainBtn" type="button">
+                <span class="event-btn-label">Rain</span>
+            </button>
+            <button class="event-btn" id="roadClosureBtn" type="button">
+                <span class="event-btn-label">Road closure</span>
+            </button>
+            <button class="event-btn" id="taxBtn" type="button">
+                <span class="event-btn-label">Tax hike</span>
+            </button>
+        </div>
+
+        <div class="clock-readout" id="clockReadout">
+            <span id="clockDay">Day 1</span>
+            <span id="clockTime">06:00</span>
+            <span id="clockWeather">Sunny</span>
+        </div>
+    </header>
+
+    <main class="layout">
+
+        <section class="town-panel">
+            <div class="panel-heading">
+                <h1>Town</h1>
+                <span class="panel-heading-meta" id="agentCount">58 citizens</span>
+            </div>
+            <canvas id="townCanvas"></canvas>
+        </section>
+
+        <aside class="instrument-rail">
+
+            <section class="panel stats-panel">
+                <div class="panel-heading">
+                    <h2>Population</h2>
+                </div>
+                <dl class="stat-grid" id="statGrid">
+                    <div class="stat">
+                        <dt>Population</dt>
+                        <dd id="statPopulation">58</dd>
+                    </div>
+                    <div class="stat">
+                        <dt>Avg. happiness</dt>
+                        <dd id="statHappiness">72%</dd>
+                    </div>
+                    <div class="stat">
+                        <dt>Employed</dt>
+                        <dd id="statEmployed">81%</dd>
+                    </div>
+                    <div class="stat">
+                        <dt>In school</dt>
+                        <dd id="statInSchool">14</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="panel chart-panel">
+                <div class="panel-heading">
+                    <h2>Avg. reward, live</h2>
+                </div>
+                <canvas id="rewardChart"></canvas>
+            </section>
+
+            <section class="panel legend-panel">
+                <div class="panel-heading">
+                    <h2>Legend</h2>
+                </div>
+                <ul class="legend-list" id="legendList">
+                    <li><span class="legend-dot legend-dot--normal"></span>Rule-based citizen</li>
+                    <li><span class="legend-dot legend-dot--learning"></span>Learning agent</li>
+                </ul>
+            </section>
+
+        </aside>
+
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
