@@ -1,16 +1,19 @@
 import heapq
 
 
-GRID_SIZE = 20 
+GRID_SIZE = 30 
 
 def heuristic(a,b):
     return abs(a[0]- b[0])+ abs(a[1]- b[1])
 
 
 
-def get_neighbors(cell , grid):
+def get_neighbors(cell, grid, road_closures=None):
     row =  cell[0]
     col =  cell[1]
+
+    num_rows = len(grid)
+    num_cols = len(grid[0]) if num_rows else 0
     
     candidates = [
         (row + 1, col),
@@ -22,15 +25,24 @@ def get_neighbors(cell , grid):
     valid_neighbors = []
     
     for n in candidates:
-        if 0<= n[0]< GRID_SIZE:
-            if 0<= n[1]< GRID_SIZE:
-                if grid[n[0]][n[1]]["type"] != "building":
-                    valid_neighbors.append(n)
+        if 0<= n[0]< num_rows:
+            if 0<= n[1]< num_cols:
+                cell_data = grid[n[0]][n[1]]
+
+                if cell_data["type"] == "building":
+                    continue
+
+                if road_closures is not None and cell_data["type"] == "road":
+                    road_id = cell_data.get("road_id")
+                    if road_id is not None and road_closures.is_closed(road_id):
+                        continue
+
+                valid_neighbors.append(n)
         
     
     return valid_neighbors
 
-def astar(start,goal,grid):
+def astar(start,goal,grid,road_closures=None):
     open_set =[]
     heapq.heappush(open_set,(0,start))
     came_from ={}
@@ -47,7 +59,7 @@ def astar(start,goal,grid):
             path.reverse()
             return path 
         
-        for neighbor in get_neighbors(current,grid):
+        for neighbor in get_neighbors(current,grid,road_closures):
             tentative_g = g_score[current]+1
 
             if neighbor not in g_score or tentative_g < g_score[neighbor]:
@@ -55,9 +67,3 @@ def astar(start,goal,grid):
                 came_from[neighbor] = current 
                 f_score = tentative_g + heuristic(neighbor,goal)
                 heapq.heappush(open_set,(f_score,neighbor))
-
-             
-
-
-
-
