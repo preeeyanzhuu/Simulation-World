@@ -1,4 +1,3 @@
-
 class Building :
     def __init__(self, building_type, location, capacity, opening_time, closing_time, width, height):
         self.building_type = building_type
@@ -49,16 +48,10 @@ class Restaurant(Building):
     def __init__(self, location, capacity):
         super().__init__("restaurant", location, capacity, 11, 22, 2, 1)
 
-class Shop(Building):
+class Mall(Building):
     def __init__(self, location, capacity):
-        super().__init__("shop", location, capacity, 9, 20, 1, 1)
+        super().__init__("mall", location, capacity, 9, 20, 1, 1)
 
 class House(Building):
     def __init__(self, location, capacity):
         super().__init__("house", location, capacity, 0, 23, 1, 1)
-
-
-
-
-
-
