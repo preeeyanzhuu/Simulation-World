@@ -1,11 +1,11 @@
-
-
 const BUILDING_COLORS = {
   hospital: "#4FA3D1",
   school: "#4FA3D1",
   restaurant: "#8A6427",
   office: "#7C8494",
   mall: "#8A6427",
+  house: "#5C9E6F",
+  park: "#3E8E5A",
 };
 
 const LERP_FACTOR = 0.12;
@@ -29,23 +29,59 @@ export function init() {
   ctx = canvas.getContext("2d");
   requestAnimationFrame(loop);
 }
+export function computeSlotOffsets(agents) {
+  const groups = new Map();
+  for (const a of agents) {
+    const key = `${a.x},${a.y}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(a);
+  }
 
+  const DOT_DIAMETER = 0.36;
+  const SPREAD = 0.8; 
+  const offsets = new Map();
+
+  for (const members of groups.values()) {
+    if (members.length === 1) {
+      offsets.set(members[0].id, { ox: 0, oy: 0, scale: 1 });
+      continue;
+    }
+    members.sort((a, b) => a.id - b.id);
+    const cols = Math.ceil(Math.sqrt(members.length));
+    const rows = Math.ceil(members.length / cols);
+    const step = SPREAD / cols;
+    const scale = Math.min(1, (step * 0.9) / DOT_DIAMETER);
+    members.forEach((m, i) => {
+      offsets.set(m.id, {
+        ox: ((i % cols) - (cols - 1) / 2) * step,
+        oy: (Math.floor(i / cols) - (rows - 1) / 2) * step,
+        scale,
+      });
+    });
+  }
+  return offsets;
+}
 
 export function setState(state) {
   latestState = state;
   for (const a of state.agents) {
     if (!renderPositions.has(a.id)) {
-      renderPositions.set(a.id, { x: a.x, y: a.y });
+      renderPositions.set(a.id, { x: a.x, y: a.y, ox: 0, oy: 0, scale: 1 });
     }
   }
 }
 
 function loop() {
   if (latestState) {
+    const slots = computeSlotOffsets(latestState.agents);
     for (const a of latestState.agents) {
       const p = renderPositions.get(a.id);
+      const slot = slots.get(a.id);
       p.x += (a.x - p.x) * LERP_FACTOR;
       p.y += (a.y - p.y) * LERP_FACTOR;
+      p.ox += (slot.ox - p.ox) * LERP_FACTOR;
+      p.oy += (slot.oy - p.oy) * LERP_FACTOR;
+      p.scale += (slot.scale - p.scale) * LERP_FACTOR;
     }
     draw(latestState);
   }
@@ -97,9 +133,9 @@ function draw(state) {
 
   for (const a of state.agents) {
     const p = renderPositions.get(a.id);
-    const cx = p.x * cell + cell / 2;
-    const cy = p.y * cell + cell / 2;
-    const r = Math.max(2, cell * 0.18);
+    const cx = (p.x + 0.5 + p.ox) * cell;
+    const cy = (p.y + 0.5 + p.oy) * cell;
+    const r = Math.max(1.5, cell * 0.18 * p.scale);
 
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
