@@ -9,10 +9,8 @@ def decide(citizen:Citizen):
     elif citizen.hunger>70:
         return "go_restaurant"
     elif citizen.happiness < 30:
-        return "go_mall"
-    elif currency < 10:
+        return "go_mall" if citizen.money < 30 else "go_park"
+    elif citizen.money < 10:
         return "go_school" if citizen.occupation == "student" else "go_work"
-    
-
     else:
         return "idle"
