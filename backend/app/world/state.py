@@ -13,6 +13,9 @@ class CityState:
         self.tax_state = TaxState()
         self.road_closures = RoadClosureState()
         self.citizens = []
+        self.buildings = []
+        self.building_entrances = {}
+        self.reward_history = []
 
     def add_citizen(self, citizen):
         self.citizens.append(citizen)
