@@ -1,6 +1,3 @@
-
-// components/dashboard.js
-
 let rewardCtx = null;
 let rewardCanvas = null;
 
