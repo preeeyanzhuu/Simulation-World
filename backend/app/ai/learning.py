@@ -2,12 +2,17 @@ from app.ai.currency import get_currency
 import random
 
 class QLearner:
-    def __init__(self, actions, alpha=0.1, gamma=0.9, epsilon=0.2):
+    def __init__(self, actions, alpha=0.1, gamma=0.9, epsilon=0.2,
+                 epsilon_min=0.02, epsilon_decay=1.0):
         self.q_table = {}
         self.actions = actions
         self.alpha = alpha
         self.gamma = gamma
         self.epsilon = epsilon
+        self.epsilon_min = epsilon_min
+        self.epsilon_decay = epsilon_decay
+        self.steps = 0
+        self._pending = None
 
     def get_q(self, state, action):
         return self.q_table.get((state, action), 0.0)
@@ -22,6 +27,16 @@ class QLearner:
         best_next = max(self.get_q(next_state, a) for a in self.actions)
         new_q = old_q + self.alpha * (reward + self.gamma * best_next - old_q)
         self.q_table[(state, action)] = new_q
+
+    def observe(self, state, action, reward):
+        if self._pending is not None:
+            prev_state, prev_action, prev_reward = self._pending
+            self.update(prev_state, prev_action, prev_reward, state)
+        self._pending = (state, action, reward)
+
+        self.steps += 1
+        self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
+
 
 def calculate_reward(citizen, action, tax_state=None):
 
