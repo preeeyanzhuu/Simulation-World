@@ -1,5 +1,4 @@
 
-
 export function update(state) {
   document.getElementById("clockDay").textContent = `Day ${state.day}`;
   document.getElementById("clockTime").textContent =
