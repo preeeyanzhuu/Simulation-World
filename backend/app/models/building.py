@@ -17,6 +17,9 @@ class Building :
                 cells.append((r, c))
         return cells
 
+    def is_open(self, hour):
+        return self.opening_time <= hour <= self.closing_time
+
     def to_dict(self):
         return {
             "building_type": self.building_type,
@@ -46,7 +49,7 @@ class Park(Building):
 
 class Restaurant(Building):
     def __init__(self, location, capacity):
-        super().__init__("restaurant", location, capacity, 11, 22, 2, 1)
+        super().__init__("restaurant", location, capacity, 8, 23, 2, 1)
 
 class Mall(Building):
     def __init__(self, location, capacity):
