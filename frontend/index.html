@@ -26,12 +26,21 @@
             <button class="event-btn" id="taxBtn" type="button">
                 <span class="event-btn-label">Tax hike</span>
             </button>
+            <select class="road-select" id="roadSelect" aria-label="Road to close"></select>
+            <span class="controls-sep"></span>
+            <button class="event-btn" id="simToggleBtn" type="button">
+                <span class="event-btn-label">Pause</span>
+            </button>
+            <button class="event-btn" id="simResetBtn" type="button">
+                <span class="event-btn-label">Reset</span>
+            </button>
         </div>
 
         <div class="clock-readout" id="clockReadout">
             <span id="clockDay">Day 1</span>
             <span id="clockTime">06:00</span>
             <span id="clockWeather">Sunny</span>
+            <span id="connStatus" class="conn-status is-offline">Connecting…</span>
         </div>
     </header>
 
@@ -47,6 +56,59 @@
 
         <aside class="instrument-rail">
 
+            <section class="panel agent-panel" id="agentPanel">
+                <div class="panel-heading">
+                    <h2 id="agentTitle">Citizen</h2>
+                    <button class="agent-close" id="agentClose" type="button" aria-label="Deselect citizen" hidden>&times;</button>
+                </div>
+
+                <p class="agent-empty" id="agentEmpty">Click a citizen on the map to inspect them live.</p>
+
+                <div class="agent-body" id="agentBody" hidden>
+                    <p class="agent-sub" id="agentSub"></p>
+
+                    <div class="bar-row" data-stat="energy">
+                        <span class="bar-label">Energy</span>
+                        <div class="bar"><div class="bar-fill"></div></div>
+                        <span class="bar-value"></span>
+                    </div>
+                    <div class="bar-row" data-stat="hunger">
+                        <span class="bar-label">Hunger</span>
+                        <div class="bar"><div class="bar-fill"></div></div>
+                        <span class="bar-value"></span>
+                    </div>
+                    <div class="bar-row" data-stat="happiness">
+                        <span class="bar-label">Happiness</span>
+                        <div class="bar"><div class="bar-fill"></div></div>
+                        <span class="bar-value"></span>
+                    </div>
+
+                    <dl class="agent-facts">
+                        <div><dt>Money</dt><dd id="factMoney"></dd></div>
+                        <div><dt>Doing</dt><dd id="factAction"></dd></div>
+                        <div><dt>Position</dt><dd id="factPosition"></dd></div>
+                        <div><dt>Heading to</dt><dd id="factGoal"></dd></div>
+                        <div><dt>Progress</dt><dd id="factProgress"></dd></div>
+                        <div><dt>Home</dt><dd id="factHome"></dd></div>
+                        <div><dt>Workplace</dt><dd id="factWorkplace"></dd></div>
+                        <div><dt>Last reward</dt><dd id="factReward"></dd></div>
+                        <div><dt>Status</dt><dd id="factStatus"></dd></div>
+                    </dl>
+
+                    <div class="agent-learner" id="agentLearner" hidden>
+                        <h3>Learning agent</h3>
+                        <dl class="agent-facts">
+                            <div><dt>Epsilon (explore)</dt><dd id="learnEpsilon"></dd></div>
+                            <div><dt>Steps taken</dt><dd id="learnSteps"></dd></div>
+                            <div><dt>Q-table entries</dt><dd id="learnQ"></dd></div>
+                            <div><dt>Sees (energy · hunger · money · mood · time · rain · tax)</dt><dd id="learnState"></dd></div>
+                        </dl>
+                        <h3>Recent decisions</h3>
+                        <ul class="learn-recent" id="learnRecent"></ul>
+                    </div>
+                </div>
+            </section>
+
             <section class="panel stats-panel">
                 <div class="panel-heading">
                     <h2>Population</h2>
@@ -61,12 +123,12 @@
                         <dd id="statHappiness">72%</dd>
                     </div>
                     <div class="stat">
-                        <dt>Employed</dt>
-                        <dd id="statEmployed">81%</dd>
+                        <dt>At work</dt>
+                        <dd id="statAtWork">0%</dd>
                     </div>
                     <div class="stat">
                         <dt>In school</dt>
-                        <dd id="statInSchool">14</dd>
+                        <dd id="statInSchool">0</dd>
                     </div>
                 </dl>
             </section>
