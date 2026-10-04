@@ -19,4 +19,3 @@ class Road:
 
     def __repr__(self):
         return f"Road(road_id={self.road_id!r}, cells={self.cells})"
-      
