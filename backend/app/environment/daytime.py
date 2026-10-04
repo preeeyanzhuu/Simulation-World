@@ -25,5 +25,7 @@ def get_time_period(hour):
         return "morning"
     elif 12 <= hour < 18:
         return "afternoon"
-    else:
+    elif 18 <= hour < 22:
         return "evening"
+    else:
+        return "night"
