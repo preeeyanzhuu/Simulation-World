@@ -1,8 +1,8 @@
 import { connect } from "./services/socket.js";
-import * as townMap from "./components/Townmap.js";
-import * as dashboard from "./components/Dashboard.js";
-import * as navbar from "./components/Navbar.js";
-import * as eventButtons from "./components/Eventbuttons.js";
+import * as townMap from "./components/townmap.js";
+import * as dashboard from "./components/dashboard.js";
+import * as navbar from "./components/navbar.js";
+import * as eventButtons from "./components/eventbuttons.js";
 import * as agentPanel from "./components/AgentPanel.js";
 
 townMap.init();
