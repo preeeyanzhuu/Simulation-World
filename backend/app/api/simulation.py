@@ -18,14 +18,15 @@ class SimulationControl:
         return self.running
 
     def reset(self):
-        self.running = False
-        new_state = CityState()
-        city_state.grid = new_state.grid
-        city_state.clock = new_state.clock
-        city_state.weather = new_state.weather
-        city_state.tax_state = new_state.tax_state
-        city_state.road_closures = new_state.road_closures
-        city_state.citizens = new_state.citizens
+        from app.engine.simulation import initialize_city_state
+        from app.models.citizen import Citizen
+
+        fresh = CityState()
+        city_state.__dict__.clear()
+        city_state.__dict__.update(fresh.__dict__)
+        Citizen.reset_id_counter()
+        initialize_city_state(city_state, force=True)
+        self.running = True
         return self.running
 
 
@@ -47,7 +48,12 @@ def stop_simulation():
 @router.post("/reset")
 def reset_simulation():
     running = sim_control.reset()
-    return {"running": running, "hour": city_state.clock.hour, "day": city_state.clock.day}
+    return {
+        "running": running,
+        "hour": city_state.clock.hour,
+        "day": city_state.clock.day,
+        "citizen_count": len(city_state.citizens),
+    }
 
 
 @router.get("/status")
